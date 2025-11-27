@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DataDance DoubleDozen</title>
+</head>
+<body>
+
+<h1>DataDance DoubleDozen</h1>
+<p>
+Inspired by <i>Anscombe's Quartet</i> and the <i>Datasaurus Dozen</i>, and the natural extension of my own prior work I hereby present the <b>DataDance DoubleDozen</b>:<br />
+<br />
+A collection of 24 distinct data sets with the same summary statistics (up to 2 decimals) yet different visual properties. More importantly, when the 24 distinct data sets in the DataDance DoubleDozen are plotted sequentually in a <i>video format</i> they depict a rather well-known dancing figure.<br />
+
+These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen. INSERT GIF BELOW
+</p>
+
+
+<h1>How?</h1>
+<p>The following sections detail why I wanted to create such a data set (Motivation), what other works have attempted similar things (Introduction), what I used to create the data sets (Method) and the results of my method (Results).
+</p>
+<h2>Motivation</h2>
+
+<p><i>Author's note: Similar to the tedious paragraphs of text you might find at the start of a dish's recipe online, you can skip this section if you would like to only look at the method and/or results.</i>
+<br />
+<br />
+<h3>Rocketshipness</h3>
+In the first year of my PhD in 2022 a MSc student of our group (Visualization and Graphics at UU; INSERT LINK) who was working on scagnostics and highlighted the Datasaurus scatterplot by Alberto Cairo (INSERT LINK) (INSERT IMAGE HERE). I was intrigued but at the time I was purely focused on Graph Drawing so I wrote it down as small curiosity I could explore in the future.
+<br />
+<br />
+Later on, in preparation for the EuroVis conference in 2023, I read a <i>satirical</i> work by Sara di Bartolomeo, Matej Lang and Cody Dunne on the worst graph layout algorithm ever (INSERT LINK). While the work itself did not have anything to do with the Datasaurus Dozen or Anscombe's Quartet, it did suggest the idea of <i>'Rocketshipness'</i> in which a graph layout would be morphed into a rocket ship while keeping summary statistics the same, akin to the idea of the Datasaurus.
+</p>
+<br />
+<br />
+<h3>Same Quality Metrics, Different Graph Drawings</h3>
+While I did not try and tackle the 'Rocketshipness' concept I was curious whether the approach used to create the Datasaurus Dozen could be used in the field of Graph Drawing. I only started working on this idea in late 2024, when I was searching for a side-project for the summer. I was also motivated by my colleague Alister Machado who was applying a similar idea to Dimensionality Reduction plots albeit with a very different technique and purpose.
+<br />
+<br />
+In Graph Drawing, we create visual representations of relational data, i.e. networks. Similar to scatter plots, graph drawings tend to have dots/points in a 2D or 3D space with the addition of (often straight) lines connecting dots that have a direct connection with one another. (INSERT EXAMPLE GRAPH DRAWING) In Graph Drawing, we deal with so-called <i>aesthetic criteria/quality metrics</i> instead of statistics. These metrics either quantify how accurately the drawing portrays the data (e.g. Stress) or measure how pleasing the drawing is (e.g. number of overlapping lines).
+<br />
+<br />
+The work of Justin Matejka and George Fitzmaurice, titled <i>Same Stats, Different Graphs</i> used simulated annealing to move points towards a target shape while keeping summary statistics the same. Me, my supervisor Tamara Mchedlidze and my promotor Alex Telea (INSERT LINKS FOR BOTH NAMES) then started working on applying the method used to create the Datasaurus Dozen for Graph Drawing and Graph Drawing quality metrics. Hence, we named our work <i>"Same Quality Metrics, Different Graph Drawings"</i>.
+<br />
+<br />
+While it proved to be much more difficult to keep Graph Drawing quality metrics the same
+
+<h2>Introduction</h2>
+
+<p></p>
+
+</body>
+</html>
