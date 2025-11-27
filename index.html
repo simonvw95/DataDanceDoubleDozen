@@ -2,50 +2,227 @@
 <html>
 <head>
 <title>DataDance DoubleDozen</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+}
+
+/* Create three equal columns that sits next to each other */
+.column {
+  flex: 33.33%;
+  padding: 5px;
+}
+</style>
+
 </head>
 <body>
 
 <h1>DataDance DoubleDozen</h1>
 <p>
-Inspired by <i>Anscombe's Quartet</i> and the <i>Datasaurus Dozen</i>, and the natural extension of my own prior work I hereby present the <b>DataDance DoubleDozen</b>:<br />
+Inspired by <i>Anscombe's Quartet</i> [1] and the <i>Datasaurus Dozen</i> [2], and the natural extension of my own prior work [3] I hereby present the <b>DataDance DoubleDozen</b>:<br />
 <br />
 A collection of 24 distinct data sets with the same summary statistics (up to 2 decimals) yet different visual properties. More importantly, when the 24 distinct data sets in the DataDance DoubleDozen are plotted sequentually in a <i>video format</i> they depict a rather well-known dancing figure.<br />
 
-These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen. INSERT GIF BELOW
+These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen.
 </p>
 
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="rickroll/circle-datadance250-datadance250.gif" alt="DataDance" style="width:55%">
+            <figcaption>Fig.1 - DataDance DoubleDozen data set</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="rickroll/output_datadance_250.gif" alt="DataDance" style="width:30%">
+            <figcaption>Fig.2 - DataDance DoubleDozen reference video</figcaption>
+        </figure>
+    </div>
+</div>
 
 <h1>How?</h1>
 <p>The following sections detail why I wanted to create such a data set (Motivation), what other works have attempted similar things (Introduction), what I used to create the data sets (Method) and the results of my method (Results).
 </p>
-<h2>Motivation</h2>
+<h1>Motivation</h1>
 
 <p><i>Author's note: Similar to the tedious paragraphs of text you might find at the start of a dish's recipe online, you can skip this section if you would like to only look at the method and/or results.</i>
+</p>
+<h2>Rocketshipness</h2>
+<p>
+In the first year of my PhD in 2022 a MSc student of our group (<a href="https://www.projects.science.uu.nl/ics-vig/">Visualization and Graphics at UU</a>) who was working on scagnostics and highlighted the Datasaurus [4] scatterplot by <a href="https://www.albertocairo.com/">Alberto Cairo</a>. I was intrigued but at the time I was purely focused on Graph Drawing so I wrote it down as small curiosity I could explore in the future.
+</p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/Datasaurus.png" alt="Datasaurus" style="width:40%">
+            <figcaption>Fig.3 - The Datasaurus from Alberto Cairo</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/example_graphdrawing.png" alt="A graph drawing" style="width:30%">
+            <figcaption>Fig.4 - An example of a graph drawing</figcaption>
+        </figure>
+    </div>
+</div>
+
+
 <br />
 <br />
-<h3>Rocketshipness</h3>
-In the first year of my PhD in 2022 a MSc student of our group (Visualization and Graphics at UU; INSERT LINK) who was working on scagnostics and highlighted the Datasaurus scatterplot by Alberto Cairo (INSERT LINK) (INSERT IMAGE HERE). I was intrigued but at the time I was purely focused on Graph Drawing so I wrote it down as small curiosity I could explore in the future.
-<br />
-<br />
-Later on, in preparation for the EuroVis conference in 2023, I read a <i>satirical</i> work by Sara di Bartolomeo, Matej Lang and Cody Dunne on the worst graph layout algorithm ever (INSERT LINK). While the work itself did not have anything to do with the Datasaurus Dozen or Anscombe's Quartet, it did suggest the idea of <i>'Rocketshipness'</i> in which a graph layout would be morphed into a rocket ship while keeping summary statistics the same, akin to the idea of the Datasaurus.
+<p>
+Later on, in preparation for the EuroVis conference in 2023, I read a <i>satirical</i> work by Sara di Bartolomeo, Matej Lang and Cody Dunne on the worst graph layout algorithm ever [5]. While the work itself did not have anything to do with the Datasaurus Dozen or Anscombe's Quartet, it did suggest the idea of <i>'Rocketshipness'</i> in which a graph drawing would be morphed into a rocket ship while keeping summary statistics the same, akin to the idea of the Datasaurus.
 </p>
 <br />
-<br />
 <h3>Same Quality Metrics, Different Graph Drawings</h3>
-While I did not try and tackle the 'Rocketshipness' concept I was curious whether the approach used to create the Datasaurus Dozen could be used in the field of Graph Drawing. I only started working on this idea in late 2024, when I was searching for a side-project for the summer. I was also motivated by my colleague Alister Machado who was applying a similar idea to Dimensionality Reduction plots albeit with a very different technique and purpose.
-<br />
-<br />
-In Graph Drawing, we create visual representations of relational data, i.e. networks. Similar to scatter plots, graph drawings tend to have dots/points in a 2D or 3D space with the addition of (often straight) lines connecting dots that have a direct connection with one another. (INSERT EXAMPLE GRAPH DRAWING) In Graph Drawing, we deal with so-called <i>aesthetic criteria/quality metrics</i> instead of statistics. These metrics either quantify how accurately the drawing portrays the data (e.g. Stress) or measure how pleasing the drawing is (e.g. number of overlapping lines).
-<br />
-<br />
-The work of Justin Matejka and George Fitzmaurice, titled <i>Same Stats, Different Graphs</i> used simulated annealing to move points towards a target shape while keeping summary statistics the same. Me, my supervisor Tamara Mchedlidze and my promotor Alex Telea (INSERT LINKS FOR BOTH NAMES) then started working on applying the method used to create the Datasaurus Dozen for Graph Drawing and Graph Drawing quality metrics. Hence, we named our work <i>"Same Quality Metrics, Different Graph Drawings"</i>.
-<br />
-<br />
-While it proved to be much more difficult to keep Graph Drawing quality metrics the same
+<p>
+While I did not try and tackle the 'Rocketshipness' concept I was curious whether the approach used to create the Datasaurus Dozen could be used in the field of Graph Drawing. I jotted it down as a future side-project and started working on it in late 2024 after my colleague Alister Machado showed me some preliminary results of his work [6] in which he completely messed up the visual properties of Dimensionality Reduction (DR) plots while retaining the same quality metric values.
+</p>
+<p>
+Some context about the topic of Graph Drawing: In Graph Drawing, we create visual representations of relational data, i.e. networks. Similar to scatter plots, graph drawings tend to have dots/points in a 2D or 3D space with the addition of (often straight) lines connecting dots that have a direct connection with one another. In Graph Drawing, we deal with so-called <i>aesthetic criteria/quality metrics</i> instead of statistics. These metrics either quantify how accurately the drawing portrays the data (e.g. Stress) or measure how pleasing the drawing is (e.g. number of overlapping lines).
+</p>
 
-<h2>Introduction</h2>
+<p>
+The work of Justin Matejka and George Fitzmaurice, titled <i>Same Stats, Different Graphs</i> [6], used simulated annealing to move points towards a target shape while keeping summary statistics the same. Me, my supervisor <a href="https://www.uu.nl/staff/TMtsentlintze1">Tamara Mchedlidze</a> and my promotor <a href="https://webspace.science.uu.nl/~telea001/">Alex Telea</a> then started working on applying the method used to create the Datasaurus Dozen for Graph Drawing and graph drawing quality metrics. Hence, we named our work <i>"Same Quality Metrics, Different Graph Drawings" [3]</i>. Obviously, the first thing I had to reproduce for this work was the Datasaurus.
+</p>
+<p>
+Trying to keep multiple graph drawing quality metrics the same while moving to a target shape proved to be difficult. We modified the simulated annealing approach from [4] to work with graph drawing metrics, to be scale-invariant and to be able to morph into any point cloud shape that was given as input. We worked with a different distance function, one that ensured that no two points in the point cloud would move to the same target point in the target shape. For some graphs, this 'fooling' process was succesful, see Figures 5 and 6.
+</p>
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_result1.png" alt="Graph 1 results" style="width:82%">
+            <figcaption>Fig.5 - Result from morphing an existing graph drawing into different target shapes, while keeping one or more metrics the same.[3]</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_result2.png" alt="Graph 2 results" style="width:35%">
+            <figcaption>Fig.6 - Similar to Fig.5 but with a different graph as input.</figcaption>
+        </figure>
+    </div>
+</div>
+
+<br />
+<br />
+<p>
+In addition to the Datasaurus (and some other target shapes from the Datasaurus Dozen) I wanted to replicate a new shape, something that had not been done before. I admit that I had always wanted to <a href="https://en.wikipedia.org/wiki/Rickrolling">'rickroll'</a> a large group of unsuspecting people, so naturally I had to find a way to include that in my work. I figured that if I could extract frames from a short video and turn each frame into a target point cloud, I could apply my previously mentioned algorithm to create a sequence of graph drawings with the same metric values that look like the target rickrolling video. This worked better than expected, see Figures 7 and 8.
+</p>
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_rr1.gif" alt="Rickroll results ST" style="width:33%">
+            <figcaption>Fig.7 - Result from morphing an existing graph drawing into 24 different target shapes, while keeping ST the same, when viewed in sequence it resembles the rickroll dance.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_rr2.gif" alt="Rickroll results ELD" style="width:33%">
+            <figcaption>Fig.8 - Same as Fig.7 but this keeps ELD the same.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_rr3.gif" alt="Rickroll results CN" style="width:33%">
+            <figcaption>Fig.9 - Same as Fig.7 but this keeps CN the same.</figcaption>
+        </figure>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_rr4.gif" alt="Rickroll results AR" style="width:33%">
+            <figcaption>Fig.10 - Same as Fig.7 but this keeps AR the same.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/own_work_rr5.gif" alt="Rickroll results ALL" style="width:33%">
+            <figcaption>Fig.11 - Same as Fig.7 but this keeps all four metrics the same.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="rickroll/output_datadance_250.gif" alt="DataDance" style="width:43%">
+            <figcaption>Fig.2 - DataDance DoubleDozen reference video</figcaption>
+        </figure>
+    </div>
+</div>
+<br />
+<br />
+
+<p>As can be seen from Figures 7-11, the rickroll video could be reproduced as a sequence of graph drawings while keeping a single metric the same. Keeping all 4 metrics the same results in a poorer quality video. After this success, I figured that extending the same rickroll data set to work for summary statistics, similar to the Datasaurus Dozen, would be trivial. Even though this extension was less trivial than expected, the result seen in Figure 1 was a success! With this, the data set DataDance DoubleDozen was born.
+</p>
+
+<h1>Method</h1>
+<p>
+    The following subsections describe what changes I have made to <a href="https://github.com/khuyentran1401/same-stats-different-graphs/tree/master">code</a> and the algorithm from [2].
+</p>
+<h2>Algorithm</h2>
+<p>
+    The algorithm described used in [2] and visualized in Fig. 12 is simple, easy to replicate, and works well for replicating the shapes in the Datasaurus Dozen. We used a slight modification in our previous work [3] to make it work for graph drawings and their metrics. For the DataDance DoubleDozen we made major adjustments to both the distance function (Fit in Fig. 12) and the noise function (MoveRandomPoints in Fig. 12).
+</p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/alg_simple.png" alt="Algorithm 1" style="width:70%">
+            <figcaption>Fig.12 - The algorithm from [2].</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/alg_sim_anneal_mine.png" alt="Algorithm 2" style="width:110%">
+            <figcaption>Fig.13 - Our modified simulated annealing algorithm.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/alg_perturb_mine.png" alt="Algorithm 2" style="width:110%">
+            <figcaption>Fig.14 - Our modified perturb algorithm.</figcaption>
+        </figure>
+    </div>
+</div>
+
+
+<br />
+<br />
+
+<p>
+    Let's start with the perturb function. On top of the temperature and the shake factor, we added support for the following new parameters: sample size, distance function, and minimum distance. <br />
+    <b>sample size:</b> Instead of moving a single random point per iteration, we now select a subset of points to move per iteration. <br />
+    <b>distance function:</b> Instead of using the same distance function per iteration, we now select a pre-specified distance function per iteration. <br />
+    <b>minimum distance:</b> Instead of moving a single point any short or long distance towards its closest target point, we now only move one or more points iff they have decreased the distance between the current data set and the target data set with a fixed amount. <br />
+    <br />
+    The algorithm from [2] already included temperature and shake parameters. The temperature allowed for 'bad' solutions to be accepted by the algorithm. The shake parameter specified how much noise was added to a point to move randomly. In [2] only the temperature decreased over time as per the simulated annealing logic. We use this logic and apply it to the shake and sample size parameters as well, meaning that as the number of iterations increases, the number of points that are selected to move randomly and the amount of noise added to these points is decreased. The pseudocode for the new simulated annealing algorithm is displayed in Figure 13 where Figure 14 depicts the perturbing function. <br />
+</p>
+
+<p>
+    The distance function is a key part of this simulated annealing algorithm. In [2] the distance function computed the distances between the perturbed point to all target points. This could lead to multiple points in our data set moving to the exact same target points as can be seen in the figures of the Datasaurus Dozen. This is suboptimal for complicated shapes such as the rickroll figures. To alleviate this issue, we use both the fast but less precise <a href="https://medium.com/@sim30217/chamfer-distance-4207955e8612">Chamfer distance</a> and the most optimal pair-wise distances computed by the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian Algorithm</a>. The chamfer distance does not necessarily prevent points from moving to the same closest target point but it can be used for quick movements. The Hungarian Algorithm, on the other hand, is slower but ensures no two points move towards the same closest target point. It takes as input an nxn distance matrix and computes the most optimal pairs of points between the initial data set and the target data set. In our pipeline, we square the distances in this matrix to add importance to too long distances between points.
+</p>
+<h2>Target data sets</h2>
 
 <p></p>
 
+<h1>Results</h1>
+
+<p></p>
+
+<h1>References</h1>
+<p>
+    [1] Francis J. Anscombe. Graphs in Statistical Analysis. The American Statistician, 27(1):17–21, 1973. doi:10.1080/00031305.1973.10478966 <br />
+    [2] Justin Matejka and George Fitzmaurice. Same Stats, Different Graphs: Generating Datasets with Varied Appearance and Identical Statistics through Simulated Annealing. In CHI, page 1290–1294. Association for Computing Machinery, 2017. doi:10.1145/3025453.3025912<br />
+    [3] Simon van Wageningen, Tamara Mchedlidzem and Alexandru C. Telea. Same Quality Metrics, Different Graph Drawings. In Graph Drawing (GD) 2025, LIPIcs, doi:10.4230/LIPIcs.GD.2025.7 <br />
+    [4] Albert Cairo. Download the Datasaurus: Never trust summary statistics alone; always visualize your data, 2016. URL: http://www.thefunctionalart.com/2016/08/download-datasaurus-never-trust-summary.html.<br />
+    [5] Sara Di Bartolomeo, Matěj Lang, and Cody Dunne. The worst graph layout algorithm ever. In Proc. alt. VIS workshop at IEEE VIS, 2022. doi:10.31219/osf.io/4hfy9 <br />
+    [6] Alister Machado, Michael Behrisch, and Alexandru C. Telea. Necessary but not sufficient: Limitations of projection quality metrics. Computer Graphics Forum, 2025. doi:10.1111/cgf.70101 <br />
+
+</p>
 </body>
 </html>
