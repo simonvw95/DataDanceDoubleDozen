@@ -446,27 +446,26 @@ def create_gifs(shape_start, shape_end):
                    duration=700 // 6, loop=0)
 
     #######################################
-    # for 2nd round of datadance we add the previous ones for one long gif
-    # create the frames from all png files
-    imgs1 = glob.glob(f"results/circle_250_{shape_end}/*.png")
-
-    # get all the PNG files in the directory (sorted by the numeric part of the filename)
-    frames1 = [Image.open(os.path.join(filename)) for filename in
-               sorted(imgs1, key=extract_number)]
-
-    imgs2 = glob.glob(f"results/{shape_start}_{shape_end}/*.png")
-
-    # get all the PNG files in the directory (sorted by the numeric part of the filename)
-    frames2 = [Image.open(os.path.join(filename)) for filename in
-               sorted(imgs2, key=extract_number)]
-
-    frames3 = frames1 + frames2
-
-    frames[0].save(f"progression_gifs/circle_{shape_start}_{shape_end}.gif", format='GIF',
-                   append_images=frames3[1:],
-                   save_all=True,
-                   duration=700 // 6, loop=0)
-
+    # # for 2nd round of datadance we add the previous ones for one long gif
+    # # create the frames from all png files
+    # imgs1 = glob.glob(f"results/circle_250_{shape_end}/*.png")
+    #
+    # # get all the PNG files in the directory (sorted by the numeric part of the filename)
+    # frames1 = [Image.open(os.path.join(filename)) for filename in
+    #            sorted(imgs1, key=extract_number)]
+    #
+    # imgs2 = glob.glob(f"results/{shape_start}_{shape_end}/*.png")
+    #
+    # # get all the PNG files in the directory (sorted by the numeric part of the filename)
+    # frames2 = [Image.open(os.path.join(filename)) for filename in
+    #            sorted(imgs2, key=extract_number)]
+    #
+    # frames3 = frames1 + frames2
+    #
+    # frames[0].save(f"progression_gifs/circle_{shape_start}_{shape_end}.gif", format='GIF',
+    #                append_images=frames3[1:],
+    #                save_all=True,
+    #                duration=700 // 6, loop=0)
 
 
 if __name__ == '__main__':
@@ -483,22 +482,23 @@ if __name__ == '__main__':
     min_sample = 1
 
     # distance functions
-    # func_list = [chamfer] * int(it * 0.75) + [hungarian] * (int(it * 0.25) + 1000)  # for normal
-    func_list = [hungarian] * int(it * 0.85) + [chamfer] * (int(it * 0.15) + 1000)  # for 2nd round of datadance
+    # func_list = [chamfer] * int(it * 0.9) + [hungarian] * (int(it * 0.1) + 1000)  # for normal Datasaurus Dozen
+    func_list = [hungarian] * int(it * 0.85) + [chamfer] * (int(it * 0.15) + 1000)  # for datadance
     # func_list = [hungarian] * int(it * 0.9) + [chamfer] * (int(it * 0.1) + 1000)
 
     shape_start = 'circle_250'
     n_points = 250
     shape_ends = ['datadance_250_{}'.format(cnt) for cnt in range(1, 25)]
 
-    # uncomment for shape replication
+    # uncomment for shape replication for Datasaurus Dozen
     # shape_ends = ['x', 'h_lines', 'v_lines', 'wide_lines', 'high_lines', 'slant_up', 'slant_down', 'circle', 'star', 'down_parab', 'bullseye', 'dots']
     # for i in range(len(shape_ends)):
     #     shape_ends[i] = shape_ends[i] + '_' + str(n_points)
 
     for shape_end in shape_ends:
 
-        shape_start = shape_end  # for 2nd round of datadance, comment out for others
+        # shape_start = shape_end  # for 2nd round of datadance, comment out for others (this is an easy way of using e.g. 'datadance_250_1' as seed dataset
+        # and the same as target dataset for extra refinements
         print('Doing shape: ' + shape_end)
         save_directory = f'results/{shape_start}_{shape_end}'
 
