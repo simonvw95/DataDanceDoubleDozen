@@ -28,7 +28,7 @@ Inspired by <i>Anscombe's Quartet</i> [1] and the <i>Datasaurus Dozen</i> [2], a
 <br />
 A collection of 24 distinct data sets with the same summary statistics (up to 2 decimals) yet different visual properties. More importantly, when the 24 distinct data sets in the DataDance DoubleDozen are plotted sequentually in a <i>video format</i> they depict a rather well-known dancing figure.<br />
 
-These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen. Additionally, these 24 data sets contain 250 points versus 142 in the Datasaurus Dozen, though we've extended our method to work for any (large, n>140) number of points.</p>
+These data sets differ from the Datasaurus Dozen in that they consist of specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen. Additionally, these 24 data sets contain 250 points versus 142 in the Datasaurus Dozen, though we've extended our method to work for any (large, n>140) number of points.</p>
 
 <div class="row">
     <div class="column">
@@ -194,7 +194,7 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 <br />
 
 <p>
-    The pseudocode for the new simulated annealing algorithm is displayed in Figure 13 where Figure 14 depicts the perturbing function. Let's start with the perturb function. On top of the temperature and the shake factor, we added support for the following new parameters: sample size, distance function, and minimum distance. <br />
+    The pseudocode for the new simulated annealing algorithm is displayed in Figure 13, where Figure 14 depicts the perturbing function. Let's start with the perturb function. On top of the temperature and the shake factor, we added support for the following new parameters: sample size, distance function, and minimum distance. <br />
     <b>sample size:</b> Instead of moving a single random point per iteration, we now select a random subset of points to move per iteration. <br />
     <b>distance function:</b> Instead of using the same distance function every iteration, we now select a pre-specified distance function per iteration allowing us to switch between distance functions similar to multi-fidelity optimization. <br />
     <b>minimum distance:</b> Instead of moving a single point any distance towards its closest target point, we now only move one or more points iff they have improved the shape of the data set with a minimum amount. <br />
@@ -220,7 +220,7 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
     </div>
     <div class="column">
         <figure>
-            <img src="figures_website/outline_1.png" alt="Outline frame 2" style="width:100%">
+            <img src="figures_website/outline_2.png" alt="Outline frame 2" style="width:100%">
             <figcaption>Fig.16 - Second frame (outline).</figcaption>
         </figure>
     </div>
