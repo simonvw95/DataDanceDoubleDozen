@@ -474,11 +474,11 @@ if __name__ == '__main__':
     it = 100000  # 100000 for 2nd round of datadance, 150000 normal
     de = 2
     frames = 100
-    max_shake = 0.25  # 0.4 for 2nd round of datadance, 0.5 normal, 0.25 test
+    max_shake = 0.25  # 0.25 for 2nd round of datadance, 0.5 normal
     min_shake = 0.1
-    max_temp = 0.15  # 0.3 for 2nd round of datadance, 0.4 normal, 0.15 test
+    max_temp = 0.15  # 0.15 for 2nd round of datadance, 0.4 normal, 0.15 test
     min_temp = 0
-    max_sample_divis = 40  # 40 test, 35 normal
+    max_sample_divis = 40  # 40 for 2nd round of datadance, 35 normal
     min_sample = 1
 
     # distance functions
