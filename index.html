@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DataDance DoubleDozen</title>
+<title>DataDance DoubleDozen (Work in progress, please do not share yet)</title>
 
 <style>
 * {
@@ -28,26 +28,25 @@ Inspired by <i>Anscombe's Quartet</i> [1] and the <i>Datasaurus Dozen</i> [2], a
 <br />
 A collection of 24 distinct data sets with the same summary statistics (up to 2 decimals) yet different visual properties. More importantly, when the 24 distinct data sets in the DataDance DoubleDozen are plotted sequentually in a <i>video format</i> they depict a rather well-known dancing figure.<br />
 
-These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen.
-</p>
+These data sets differ from the Datasaurus Dozen in that they target specific complicated shapes that cannot be attained with the same implementation used to create the Datasaurus Dozen. Additionally, these 24 data sets contain 250 points versus 142 in the Datasaurus Dozen, though we've extended our method to work for any (large, n>140) number of points.</p>
 
 <div class="row">
     <div class="column">
         <figure>
-            <img src="rickroll/circle-datadance250-datadance250.gif" alt="DataDance" style="width:55%">
+            <img src="rickroll/circle-datadance250-datadance250.gif" alt="DataDance" style="width:85%">
             <figcaption>Fig.1 - DataDance DoubleDozen data set</figcaption>
         </figure>
     </div>
     <div class="column">
         <figure>
-            <img src="rickroll/output_datadance_250.gif" alt="DataDance" style="width:30%">
+            <img src="rickroll/output_datadance_250.gif" alt="DataDance" style="width:50%">
             <figcaption>Fig.2 - DataDance DoubleDozen reference video</figcaption>
         </figure>
     </div>
 </div>
 
 <h1>How?</h1>
-<p>The following sections detail why I wanted to create such a data set (Motivation), what other works have attempted similar things (Introduction), what I used to create the data sets (Method) and the results of my method (Results).
+<p>The following sections detail why I wanted to create such a data set and what other works have attempted similar things (Motivation), what I used to create the data sets (Method) and the results of my method (Results).
 </p>
 <h1>Motivation</h1>
 
@@ -103,7 +102,7 @@ Trying to keep multiple graph drawing quality metrics the same while moving to a
     </div>
     <div class="column">
         <figure>
-            <img src="figures_website/own_work_result2.png" alt="Graph 2 results" style="width:35%">
+            <img src="figures_website/own_work_result2.png" alt="Graph 2 results" style="width:82%">
             <figcaption>Fig.6 - Similar to Fig.5 but with a different graph as input.</figcaption>
         </figure>
     </div>
@@ -166,7 +165,7 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 </p>
 <h2>Algorithm</h2>
 <p>
-    The algorithm described used in [2] and visualized in Fig. 12 is simple, easy to replicate, and works well for replicating the shapes in the Datasaurus Dozen. We used a slight modification in our previous work [3] to make it work for graph drawings and their metrics. For the DataDance DoubleDozen we made major adjustments to both the distance function (Fit in Fig. 12) and the noise function (MoveRandomPoints in Fig. 12).
+    The algorithm described used in [2] and visualized in Fig. 12 is simple, easy to replicate, and works well for replicating the shapes in the Datasaurus Dozen. We used a slight modification in our previous work [3] to make it work for graph drawings and their metrics. For the DataDance DoubleDozen we made major adjustments to the perturb function, the distance function (Fit in Fig. 12), and the noise function (MoveRandomPoints in Fig. 12).
 </p>
 
 <div class="row">
@@ -195,30 +194,209 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 <br />
 
 <p>
-    Let's start with the perturb function. On top of the temperature and the shake factor, we added support for the following new parameters: sample size, distance function, and minimum distance. <br />
-    <b>sample size:</b> Instead of moving a single random point per iteration, we now select a subset of points to move per iteration. <br />
-    <b>distance function:</b> Instead of using the same distance function per iteration, we now select a pre-specified distance function per iteration. <br />
-    <b>minimum distance:</b> Instead of moving a single point any short or long distance towards its closest target point, we now only move one or more points iff they have decreased the distance between the current data set and the target data set with a fixed amount. <br />
+    The pseudocode for the new simulated annealing algorithm is displayed in Figure 13 where Figure 14 depicts the perturbing function. Let's start with the perturb function. On top of the temperature and the shake factor, we added support for the following new parameters: sample size, distance function, and minimum distance. <br />
+    <b>sample size:</b> Instead of moving a single random point per iteration, we now select a random subset of points to move per iteration. <br />
+    <b>distance function:</b> Instead of using the same distance function every iteration, we now select a pre-specified distance function per iteration allowing us to switch between distance functions similar to multi-fidelity optimization. <br />
+    <b>minimum distance:</b> Instead of moving a single point any distance towards its closest target point, we now only move one or more points iff they have improved the shape of the data set with a minimum amount. <br />
     <br />
-    The algorithm from [2] already included temperature and shake parameters. The temperature allowed for 'bad' solutions to be accepted by the algorithm. The shake parameter specified how much noise was added to a point to move randomly. In [2] only the temperature decreased over time as per the simulated annealing logic. We use this logic and apply it to the shake and sample size parameters as well, meaning that as the number of iterations increases, the number of points that are selected to move randomly and the amount of noise added to these points is decreased. The pseudocode for the new simulated annealing algorithm is displayed in Figure 13 where Figure 14 depicts the perturbing function. <br />
+    The algorithm from [2] already included temperature and shake parameters. The temperature allowed for 'bad' solutions to be accepted by the algorithm. The shake parameter specified how much noise was added to a point to move randomly. In [2], only the temperature decreased over time as per the simulated annealing logic. We use this logic and apply it to the shake and sample size parameters as well, meaning that as the number of iterations increases, the number of points that are selected to move randomly and the amount of noise added to these points is decreased. <br />
 </p>
 
 <p>
-    The distance function is a key part of this simulated annealing algorithm. In [2] the distance function computed the distances between the perturbed point to all target points. This could lead to multiple points in our data set moving to the exact same target points as can be seen in the figures of the Datasaurus Dozen. This is suboptimal for complicated shapes such as the rickroll figures. To alleviate this issue, we use both the fast but less precise <a href="https://medium.com/@sim30217/chamfer-distance-4207955e8612">Chamfer distance</a> and the most optimal pair-wise distances computed by the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian Algorithm</a>. The chamfer distance does not necessarily prevent points from moving to the same closest target point but it can be used for quick movements. The Hungarian Algorithm, on the other hand, is slower but ensures no two points move towards the same closest target point. It takes as input an nxn distance matrix and computes the most optimal pairs of points between the initial data set and the target data set. In our pipeline, we square the distances in this matrix to add importance to too long distances between points.
+    The distance function is a key part of this simulated annealing algorithm. In [2] the distance function computed the distances between the perturbed point to all target points. This could lead to multiple points in our data set moving to the exact same target points as can be seen in the figures of the Datasaurus Dozen. This is suboptimal for complicated shapes such as the rickroll figures. To alleviate this issue, we use both the fast but less precise <a href="https://medium.com/@sim30217/chamfer-distance-4207955e8612">Chamfer distance</a> and the most optimal pair-wise distances computed by the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian Algorithm</a>. The chamfer distance does not necessarily prevent points from moving to the same closest target point but it can be used for quick movements. The Hungarian Algorithm, on the other hand, is slower but ensures no two points move towards the same closest target point. It takes as input an nxn distance matrix and computes the most optimal pairs of points between the initial data set and the target data set. In our pipeline, we square the distances in this matrix before passing it to the Hungarian Algorithm, to add importance to too long distances between points. After the most optimal pairs are found, the root of the distances are taken to transform them back into their original magnitudes.
 </p>
 <h2>Target data sets</h2>
 
-<p></p>
+<p>
+    From a reference <a href="https://zepsilon.wordpress.com/2016/01/06/animating-the-rick-roll/">video</a> we extract the outlines from each frame. Subsequently, we then specify the number of points (250) we want to extract from these outlines in each frame to acquire a point cloud that resembles the shape in each original frame. We then scale and translate these resulting point clouds to make it easier to morph into them as the summary statistics are scale-dependent.
+</p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/outline_1.png" alt="Outline frame 1" style="width:100%">
+            <figcaption>Fig.15 - First frame (outline). </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/outline_1.png" alt="Outline frame 2" style="width:100%">
+            <figcaption>Fig.16 - Second frame (outline).</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/points_1.png" alt="Outline frame 1" style="width:100%">
+            <figcaption>Fig.17 - First frame (point cloud.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/points_2.png" alt="Outline frame 1" style="width:100%">
+            <figcaption>Fig.18 - Second frame (point cloud). </figcaption>
+        </figure>
+    </div>
+</div>
+
+<p>
+    <b>Initial data set</b> We noticed that when working with the Hungarian Algorithm that the shape of the starting data set had an impact on how points moved towards a target shape. Figures 19 and 20 display the result of moving from a random point cloud of 250 points towards the 16th frame of DataDance. We used our algorithm and applied it to a random point cloud of 250 points (with the same summary statistics given by the Datasaurus Dozen) to move towards a circle. This resulted in the data set as shown in Fig. 21. We use this circle data set to morph into all frames of DataDance (e.g. Fig. 22). For this we use the following parameter values:  <br /> <br />
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <b>temperature T</b>.   \[
+  T = [\,0.4 \;\dots\; 0\,]^{iters}_{0}
+  \]
+    <b>shake</b>.   \[
+  shake = [\,0.5 \;\dots\; 0.1\,]^{iters}_{0}
+  \]
+    <b>sample_size</b>.   \[
+  sample\_size = [\,\frac{250}{35} \;\dots\; 1\,]^{iters}_{0}
+  \]
+
+    Additionally for iters=150000, we use the Hungarian Algorithm for the first 85% of the iterations. The remaining 15% of the iterations are performed with the Chamfer Distance. Once we've done this we have the first round of the DataDance. <br /> We refine these results by repeating the process: the resulting data sets of the first round are given to the exact same algorithm as starting data sets. We change the starting temperature, starting shake, and the starting sample size to 0.15, 0.4, and 250/40, respectively. This gives us our final data set collection DataDance as displayed in Fig. 1.
+</p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/random_cloud_start.png" alt="Random cloud" style="width:130%">
+            <figcaption>Fig.19 - Random cloud start. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/random-datadance16.png" alt="Outline frame 2" style="width:130%">
+            <figcaption>Fig.20 - Result of morphing random cloud into the 16th frame of DataDance.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/circle_start.png" alt="Circle" style="width:130%">
+            <figcaption>Fig.21 - Circle start. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/circle_datadance16.png" alt="Outline frame 2" style="width:130%">
+            <figcaption>Fig.22 - Result of morphing circle into the 16th frame of DataDance.</figcaption>
+        </figure>
+    </div>
+</div>
 
 <h1>Results</h1>
+<h2>DataDance DoubleDozen</h2>
+<p>Figure 1 showcases the final DataDance DoubleDozen in detail. In Figures 23-26 the progression of morphing a starting data set into one of the frames of the DataDance are shown. </p>
 
-<p></p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/circle_datadance2.gif" alt="Circle to 2nd Frame" style="width:130%">
+            <figcaption>Fig.23 - Circle to 2nd frame of DataDance. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/datadance_refinement2.gif" alt="Refinement 2nd Frame" style="width:130%">
+            <figcaption>Fig.24 - Refinement of 2nd frame of DataDance</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/circle_datadance3.gif" alt="Circle to 3rd Frame" style="width:130%">
+            <figcaption>Fig.25- Circle to 3rd frame of DataDance. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/datadance_refinement2.gif" alt="Refinement 3rd Frame" style="width:130%">
+            <figcaption>Fig.26 - Refinement of 3rd frame of DataDance</figcaption>
+        </figure>
+    </div>
+</div>
+
+<h2>Datasaurus Dozen replication</h2>
+<p>We replicated the Datasaurus Dozen data sets. The notaable exception here is that we did not replicate the Datasaurus (yet) as the Datasaurus was specifically designed for 142 points. We used their random cloud data set and added points to reach 250 points in total, while keeping the same summary statistics. We then morphed this random cloud data set into 12 target data sets, as can be seen in Figures 27-37. </p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/bullseye.png" alt="Bullseye" style="width:130%">
+            <figcaption>Fig.27 - Bullseye data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/circle.png" alt="Circle" style="width:130%">
+            <figcaption>Fig.28 - Circle data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/dots.png" alt="Dots" style="width:130%">
+            <figcaption>Fig.29 - Dots data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/h_lines.png" alt="Horizontal Lines" style="width:130%">
+            <figcaption>Fig.30 - Horizontal lines data set</figcaption>
+        </figure>
+    </div>
+</div>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/parab.png" alt="Parabola" style="width:130%">
+            <figcaption>Fig.31 - Parabola data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/slant_down.png" alt="Slanted down" style="width:130%">
+            <figcaption>Fig.32 - Slanted down data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/slant_up.png" alt="Slanted up" style="width:130%">
+            <figcaption>Fig.33 - Slanted up data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/star.png" alt="Star" style="width:130%">
+            <figcaption>Fig.34 - Star data set</figcaption>
+        </figure>
+    </div>
+</div>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/v_lines.png" alt="Vertical lines" style="width:90%">
+            <figcaption>Fig.35 - Vertical lines data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/wide_lines.png" alt="Wide lines" style="width:90%">
+            <figcaption>Fig.36 - Wide lines data set. </figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/x.png" alt="X" style="width:90%">
+            <figcaption>Fig.37 - X data set. </figcaption>
+        </figure>
+    </div>
+</div>
 
 <h1>References</h1>
 <p>
     [1] Francis J. Anscombe. Graphs in Statistical Analysis. The American Statistician, 27(1):17–21, 1973. doi:10.1080/00031305.1973.10478966 <br />
     [2] Justin Matejka and George Fitzmaurice. Same Stats, Different Graphs: Generating Datasets with Varied Appearance and Identical Statistics through Simulated Annealing. In CHI, page 1290–1294. Association for Computing Machinery, 2017. doi:10.1145/3025453.3025912<br />
-    [3] Simon van Wageningen, Tamara Mchedlidzem and Alexandru C. Telea. Same Quality Metrics, Different Graph Drawings. In Graph Drawing (GD) 2025, LIPIcs, doi:10.4230/LIPIcs.GD.2025.7 <br />
+    [3] Simon van Wageningen, Tamara Mchedlidze and Alexandru C. Telea. Same Quality Metrics, Different Graph Drawings. In Graph Drawing (GD) 2025, LIPIcs, doi:10.4230/LIPIcs.GD.2025.7 <br />
     [4] Albert Cairo. Download the Datasaurus: Never trust summary statistics alone; always visualize your data, 2016. URL: http://www.thefunctionalart.com/2016/08/download-datasaurus-never-trust-summary.html.<br />
     [5] Sara Di Bartolomeo, Matěj Lang, and Cody Dunne. The worst graph layout algorithm ever. In Proc. alt. VIS workshop at IEEE VIS, 2022. doi:10.31219/osf.io/4hfy9 <br />
     [6] Alister Machado, Michael Behrisch, and Alexandru C. Telea. Necessary but not sufficient: Limitations of projection quality metrics. Computer Graphics Forum, 2025. doi:10.1111/cgf.70101 <br />
