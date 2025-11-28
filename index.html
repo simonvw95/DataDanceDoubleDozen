@@ -54,7 +54,7 @@ Inspired by <i>Anscombe's Quartet</i> <a href="https://www.tandfonline.com/doi/a
 <br />
 A collection of 24 distinct data sets, corresponding to different time stamps, with the same summary statistics (up to 2 decimals) yet different visual properties. More importantly, when the 24 distinct data sets in the DataDance DoubleDozen are plotted sequentually in a <i>video format</i> they depict a rather well-known dancing figure.<br />
 
-These data sets differ from the Datasaurus Dozen in that they consist of specific complicated shapes that cannot be attained with the same <a href="https://github.com/khuyentran1401/same-stats-different-graphs/tree/master">implementation</a> used to create the Datasaurus Dozen. Additionally, each time stamp contains 250 points versus 142 in the Datasaurus Dozen. We've extended our method to work for any number of points. <i>Note: for smaller number of points (n<100) the resolution of the target video decreases but the implementation should still function properly.</i>
+These data sets differ from the Datasaurus Dozen in that they consist of specific complicated shapes that cannot be attained with the same <a href="https://github.com/khuyentran1401/same-stats-different-graphs/tree/master">implementation</a> used to create the Datasaurus Dozen. Additionally, each time stamp contains 250 points versus 142 in the Datasaurus Dozen. We've extended our method to work for any number of points. <i>Note: for smaller number of points (n<100) the resolution of the target video decreases but the implementation should still function properly.</i> Our code can be found on this <a href="https://github.com/simonvw95/DataDanceDoubleDozen">page</a>.
 </p>
 
 <div class="row">
@@ -182,11 +182,11 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 
 <h1>Method</h1>
 <p>
-    The following subsections describe what changes I have made to <a href="https://github.com/khuyentran1401/same-stats-different-graphs/tree/master">code</a> and the algorithm from <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a>.
+    The following subsections describe what changes I have made to existing <a href="https://github.com/khuyentran1401/same-stats-different-graphs/tree/master">code</a> and the algorithm from <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a>.
 </p>
 <h2>Algorithm</h2>
 <p>
-    The algorithm described used in <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a> and visualized in Fig. 12 is simple, easy to replicate, and works well for replicating the shapes in the Datasaurus Dozen. We used a slight modification in our previous work <a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.GD.2025.7">[3]</a> to make it work for graph drawings and their metrics. For the DataDance DoubleDozen we made major adjustments to the perturb function, the distance function (Fit in Fig. 12), and the noise function (MoveRandomPoints in Fig. 12). Our <a href="https://github.com/simonvw95/DataDanceDoubleDozen">code</a> is available on GitHub.
+    The algorithm described used in <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a> and visualized in Fig. 12 is simple, easy to replicate, and works well for replicating the shapes in the Datasaurus Dozen. We used a slight modification in our previous work <a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.GD.2025.7">[3]</a> to make it work for graph drawings and their metrics. For the DataDance DoubleDozen we made major adjustments to the perturb function, the distance function (Fit in Fig. 12), and the noise function (MoveRandomPoints in Fig. 12). <a href="https://github.com/simonvw95/DataDanceDoubleDozen">Our code</a> is available on GitHub.
 </p>
 
 <div class="row">
@@ -332,7 +332,7 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 </div>
 
 <h2>Datasaurus Dozen replication</h2>
-<p>We replicated the Datasaurus Dozen data sets. The notaable exception here is that we did not replicate the Datasaurus (yet) as the Datasaurus was specifically designed for 142 points. We used their random cloud data set and added points to reach 250 points in total, while keeping the same summary statistics. We then morphed this random cloud data set into 12 target data sets, as can be seen in Figures 27-37. </p>
+<p>We replicated the Datasaurus Dozen data sets. The notable exception here is that we did not replicate the Datasaurus (yet) as the Datasaurus and its summary statistics was specifically designed for 142 points. We used a random cloud data set and added points to reach 250 points in total, while keeping the same summary statistics. We then morphed this random cloud data set into 12 target data sets, as can be seen in Figures 27-37. For this, we used the Chamfer distance for the first 85% of the iterations followed by the Hungarian Algorithm for the remainder. </p>
 
 <div class="row">
     <div class="column">
