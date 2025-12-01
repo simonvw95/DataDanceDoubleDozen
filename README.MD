@@ -25,7 +25,7 @@ To recreate the DataDance DoubleDozen (For the DataSaurus Dozen, skip step 1 and
 - max_temp, min_temp: the maximum and minimum temperature of the algorithm, respectively. I.e. the probability of accepting bad data sets.
 - max_sample_divis: the percentage of points we select in our subset to which noise is added.
 - min_sample: the minimum sample size
-- func_list: a list (with a minimum length of 'it') containing which distance function to use for which iteration. Set to Chamfer * (it*0.9) + Hungarian * (it*0.1) for the DataSaurus Dozen and the reversed order for the DataDance DoubleDozen
+- func_list: a list (with a minimum length of 'it') containing which distance function to use for which iteration. Set to \[Chamfer\] * (it * 0.9) + \[Hungarian\] * (it * 0.1) for the DataSaurus Dozen and the reversed order for the DataDance DoubleDozen
 - shape_start: a string indicating which data set in seed_datasets to use as the initial data set
 - shape_ends: a list of strings indicating which data set(s) in target_datasets to use as to replicate their shapes.
 4. Run **datadance_gif.py**. In this script, specify the names of the png files to use to create the final gif of the DataDance DoubleDozen.
