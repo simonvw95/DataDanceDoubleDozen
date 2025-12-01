@@ -2,15 +2,15 @@
 
 For more detailed explanations on the method and results, as well as the visualizations of the results, please visit the following page: https://simonvw95.github.io/DataDanceDoubleDozen/
 
-# Running instructions
+# Environment instructions
 
 Python version 3.10.4
 
 Install packages with: 'pip install -r requirements.txt'
 
-### Minimal example
+## Recreating results 
 
-To recreate the DataDance DoubleDozen:
+To recreate the DataDance DoubleDozen (For the DataSaurus Dozen, skip step 1 and 4):
 1. Run **datadance_to_dataset.py**. 
 - In this script, specify the number of points used to display the rickroll gif (and thus the number of points in your data sets). This by default is N=250.
 2. Run **generate_shapes.py**.
