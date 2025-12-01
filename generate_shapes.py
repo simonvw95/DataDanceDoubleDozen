@@ -249,11 +249,15 @@ def generate_refined_2d_cloud(init_df, n_points, seed=None, noise_scale=0.5):
 
 if __name__ == '__main__':
 
-    n_points = 250
+    ############################################################################################################
+    # very important variable, sets the number of points we want to use for each data set
+    N = 250
+    ############################################################################################################
+
     line_shapes = ['x', 'h_lines', 'v_lines', 'wide_lines', 'high_lines', 'slant_up', 'slant_down', 'circle', 'star', 'down_parab', 'bullseye', 'dots', 'random_cloud']
 
     for line_shape in line_shapes:
 
-        generate_dataset(line_shape, n_points)
+        generate_dataset(line_shape, N)
 
     print('Done generating all shapes for specified number of points')
