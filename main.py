@@ -8,7 +8,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-import sys
 import pytweening
 import glob
 import os
@@ -183,9 +182,8 @@ def perturb(df, tar_df,
 
     while True:
 
-        # NEW moved this to inside of loop
         # take multiple rows at random and shift them
-        row = np.random.randint(0, len(df), sample_size)  # np.random.randint(0, len(df))
+        row = np.random.randint(0, len(df), sample_size)
 
         # save old vals
         old_vals = [df['x'][row], df['y'][row]]
@@ -204,10 +202,9 @@ def perturb(df, tar_df,
         # set new vals and compute the distance between current dataset and target dataset
         df['x'][row] = xm
         df['y'][row] = ym
-        # new_dist = dis_func(tar_df, df.to_numpy())
         new_dist = dis_func(scaled_tar_df, scale(df.to_numpy()))
 
-        # NEW, removed allowed dist, we accept new vals (already set) if we are closer or if we are allowed to accept bad solution
+        # we accept new vals if we are closer (with a minimum amount) or if we are allowed to accept bad solution
         if (new_dist < old_dist and (abs(new_dist - old_dist) >= min_move)) or do_bad:
             break
         else:
@@ -222,16 +219,6 @@ def perturb(df, tar_df,
 # helper function for setting the shake, temperature and sample size
 def s_curve(v):
     return pytweening.easeInOutQuad(v)
-
-
-# from: https://github.com/khuyentran1401/same-stats-different-graphs/tree/master
-def is_kernel():
-    if 'IPython' not in sys.modules:
-        # IPython hasn't been imported, definitely not
-        return False
-    from IPython import get_ipython
-    # check for `kernel` attribute on the IPython instance
-    return getattr(get_ipython(), 'kernel', None) is not None
 
 
 # inspired by and adapted from: https://github.com/khuyentran1401/same-stats-different-graphs/tree/master
@@ -269,7 +256,6 @@ def run_pattern(df, target, directory, iters=100000, num_frames=100, decimals=2,
     r_good = df.copy()
     tar_df = pd.read_csv("{}/target_datasets/{}.csv".format(current_path, target), header=None,
                          names=['x', 'y'])
-    # tar_df = scale(tar_df.to_numpy())
     tar_df = tar_df.to_numpy()
 
     # this is a list of frames that we will end up writing to file
@@ -288,13 +274,9 @@ def run_pattern(df, target, directory, iters=100000, num_frames=100, decimals=2,
     extras = [iters] * freeze_for
     write_frames.extend(extras)
 
-    # this gets us the nice progress bars in the notebook, but keeps it from crashing
     looper = trange(iters + 1, leave=True, ascii=True, desc=target + " pattern")
-    if is_kernel():
-        looper = tnrange(iters + 1, leave=True, ascii=True, desc=target + " pattern")
     best_dis = 1e9
 
-    # NEW, added switching of functions at different intervals, added minimum maximum arguments for temperature, sample size and shaking
     func_list = function_calls
     prev_func = func_list[0]
 
@@ -330,7 +312,7 @@ def run_pattern(df, target, directory, iters=100000, num_frames=100, decimals=2,
         if is_error_still_ok(df, test_good, decimals):
             r_good = test_good
 
-            # NEW, added tracking of distance (loss) and adding it to the tqdm thing
+            # tracking of distance (loss) and adding it to the tqdm thing
             if new_dis < best_dis:
                 best_dis = new_dis
 
