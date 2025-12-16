@@ -223,7 +223,357 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
 </p>
 
 <p>
-    The distance function is a key part of this simulated annealing algorithm. In <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a> the distance function computed the distances between the perturbed point to all target points. This could lead to multiple points in our data set moving to the exact same target points as can be seen in the figures of the Datasaurus Dozen. This is suboptimal for complicated shapes such as the rickroll figures. To alleviate this issue, we use both the fast but less precise <a href="https://medium.com/@sim30217/chamfer-distance-4207955e8612">Chamfer distance</a> and the most optimal pair-wise distances computed by the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian Algorithm</a>. <i>Note: a big thank you to <a href="https://amreis.github.io/">Alister Machado</a> for introducing me to this algorithm.</i> The chamfer distance does not necessarily prevent points from moving to the same closest target point but it can be used for quick movements. The Hungarian Algorithm, on the other hand, is slower but ensures no two points move towards the same closest target point. It takes as input an nxn distance matrix and computes the most optimal pairs of points between the initial data set and the target data set. In our pipeline, we square the distances in this matrix before passing it to the Hungarian Algorithm, to add importance to too long distances between points. After the most optimal pairs are found, the root of the distances are taken to transform them back into their original magnitudes.
+    The distance function is a key part of this simulated annealing algorithm. In <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a> the distance function computed the distances between the perturbed point to all target points. This could lead to multiple points in our data set moving to the exact same target points as can be seen in the figures of the Datasaurus Dozen. This is suboptimal for complicated shapes such as the rickroll figures. To alleviate this issue, we use both the fast but less precise <a href="https://medium.com/@sim30217/chamfer-distance-4207955e8612">Chamfer distance</a> and the most optimal pair-wise distances computed by the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian Algorithm</a>. <i>Note: a big thank you to <a href="https://amreis.github.io/">Alister Machado</a> for introducing me to this algorithm.</i> The chamfer distance does not necessarily prevent points from moving to the same closest target point but it can be used for quick movements. The Hungarian Algorithm, on the other hand, is slower but ensures no two points move towards the same closest target point. It takes as input an nxn distance matrix and computes the most optimal pairs of points between the initial data set and the target data set. To understand how this works, we display a few simple examples in Figures X-Z. <br /> <br />
+
+    Fig. X displays two point clouds, with the point cloud in red being the current point cloud that we want to morph into the target point cloud in yellow. The distance matrices portraying the distances between these sets of points are given in Tab. 1-3. The original solution in <a href="https://dl.acm.org/doi/10.1145/3025453.3025912">[2]</a> simply searched for a current point's closest target point, this would have resulted in the distance matrix in Tab. 1, where points A to F would move towards target point S. <br /> <br />
+
+    When we only allow one point to move to a target point we must care about the ordering of the points as with each mapping we remove options for the other points. For instance, In Tab. 2 we select point A to move towards target point S as that is the closest point. Points B-H now cannot move to point S anymore as that option has been exhausted. If we continue doing this elimination process from B-H we get the solution as highlighted by orange in Tab. 2 and mapped out in Fig. Y. This solution, however, is not the most optimal one that exists. The Hungarian Algorithm luckily does find the perfect solution as can be seen by the highlighted values in Tab. 3 and the the mapping in Fig. Z, i.e. the sum of the distance values for the distances highlighted in Tab. 3 is smaller than the sum of the distance values for the distances highlighted in Tab. 2.
+
+
+
+</p>
+
+<div class="row">
+    <div class="column">
+        <figure>
+            <img src="figures_website/start.png" alt="Start point clouds" style="width:150%">
+            <figcaption>Fig.X - Current point cloud given in red, target point cloud given in yellow.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/fixed order.png" alt="Fixed order" style="width:150%">
+            <figcaption>Fig.Y - The simplest mapping of which red point goes to which yellow point.</figcaption>
+        </figure>
+    </div>
+    <div class="column">
+        <figure>
+            <img src="figures_website/hung.png" alt="Hungarian order" style="width:150%">
+            <figcaption>Fig.Z - The best mapping of which red point goes to which yellow point found by the Hungarian Algorithm.</figcaption>
+        </figure>
+    </div>
+</div>
+
+<p>
+    <table style="display: inline-block;">
+      <tr>
+        <th>.</th>
+        <th>S</th>
+        <th>T</th>
+        <th>U</th>
+        <th>V</th>
+        <th>W</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>Z</th>
+      </tr>
+      <tr>
+        <th>A</th>
+        <th bgcolor="orange">216</th>
+        <td>232</td>
+        <td>249</td>
+        <td>267</td>
+        <td>258</td>
+        <td>271</td>
+        <td>286</td>
+        <td>302</td>
+      </tr>
+      <tr>
+        <th>B</th>
+        <th bgcolor="orange">190</td>
+        <td>201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>237</td>
+        <td>246</td>
+        <td>257</td>
+        <td>270</td>
+      </tr>
+      <tr>
+        <th>C</th>
+        <th bgcolor="orange">160</td>
+        <td>176</td>
+        <td>195</td>
+        <td>215</td>
+        <td>201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>247</td>
+      </tr>
+      <tr>
+        <th>D</th>
+        <th bgcolor="orange">130</td>
+        <td>139</td>
+        <td>152</td>
+        <td>168</td>
+        <td>178</td>
+        <td>185</td>
+        <td>195</td>
+        <td>208</td>
+      </tr>
+      <tr>
+        <th>E</th>
+        <th bgcolor="orange">125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>180</td>
+        <td>167</td>
+        <td>180</td>
+        <td>195</td>
+        <td>212</td>
+      </tr>
+      <tr>
+        <th>F</th>
+        <th bgcolor="orange">111</td>
+        <td>125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>158</td>
+        <td>167</td>
+        <td>180</td>
+        <td>195</td>
+      </tr>
+      <tr>
+        <th>G</th>
+        <td>270</td>
+        <td>250</td>
+        <td>230</td>
+        <th bgcolor="orange">212</td>
+        <td>301</td>
+        <td>282</td>
+        <td>265</td>
+        <td>250</td>
+      </tr>
+      <tr>
+        <th>H</th>
+        <td>261</td>
+        <td>237</td>
+        <td>213</td>
+        <td>190</td>
+        <td>251</td>
+        <td>226</td>
+        <td>201</td>
+        <th bgcolor="orange">176</td>
+      </tr>
+    <caption>
+        Tab 1. The Distance Matrix of the point clouds displayed in Fig. X. Naive solution that leads to points moving to the same target point.
+    </caption>
+    </table>
+
+   <table style="display: inline-block;">
+      <tr>
+        <th>.</th>
+        <th>S</th>
+        <th>T</th>
+        <th>U</th>
+        <th>V</th>
+        <th>W</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>Z</th>
+      </tr>
+      <tr>
+        <th>A</th>
+        <th bgcolor="orange">216</td>
+        <td>232</td>
+        <td>249</td>
+        <td>267</td>
+        <td>258</td>
+        <td>271</td>
+        <td>286</td>
+        <td>302</td>
+      </tr>
+      <tr>
+        <th>B</th>
+        <td>190</td>
+        <th bgcolor="orange">201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>237</td>
+        <td>246</td>
+        <td>257</td>
+        <td>270</td>
+      </tr>
+      <tr>
+        <th>C</th>
+        <td>160</td>
+        <td>176</td>
+        <th bgcolor="orange">195</td>
+        <td>215</td>
+        <td>201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>247</td>
+      </tr>
+      <tr>
+        <th>D</th>
+        <td>130</td>
+        <td>139</td>
+        <td>152</td>
+        <th bgcolor="orange">168</td>
+        <td>178</td>
+        <td>185</td>
+        <td>195</td>
+        <td>208</td>
+      </tr>
+      <tr>
+        <th>E</th>
+        <td>125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>180</td>
+        <th bgcolor="orange">167</td>
+        <td>180</td>
+        <td>195</td>
+        <td>212</td>
+      </tr>
+      <tr>
+        <th>F</th>
+        <td>111</td>
+        <td>125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>158</td>
+        <th bgcolor="orange">167</td>
+        <td>180</td>
+        <td>195</td>
+      </tr>
+      <tr>
+        <th>G</th>
+        <td>270</td>
+        <td>250</td>
+        <td>230</td>
+        <td>212</td>
+        <td>301</td>
+        <td>282</td>
+        <td>265</td>
+        <th bgcolor="orange">250</td>
+      </tr>
+      <tr>
+        <th>H</th>
+        <td>261</td>
+        <td>237</td>
+        <td>213</td>
+        <td>190</td>
+        <td>251</td>
+        <td>226</td>
+        <th bgcolor="orange">201</td>
+        <td>176</td>
+      </tr>
+    <caption>
+        Tab 2. The Distance Matrix of the point clouds displayed in Fig. Y. Naive solution by the simplest ordering (from A to H). Sum of distances=1565.
+    </caption>
+    </table>
+
+    <table style="display: inline-block;">
+      <tr>
+        <th>.</th>
+        <th>S</th>
+        <th>T</th>
+        <th>U</th>
+        <th>V</th>
+        <th>W</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>Z</th>
+      </tr>
+      <tr>
+        <th>A</th>
+        <th bgcolor="orange">216</td>
+        <td>232</td>
+        <td>249</td>
+        <td>267</td>
+        <td>258</td>
+        <td>271</td>
+        <td>286</td>
+        <td>302</td>
+      </tr>
+      <tr>
+        <th>B</th>
+        <td>190</td>
+        <th bgcolor="orange">201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>237</td>
+        <td>246</td>
+        <td>257</td>
+        <td>270</td>
+      </tr>
+      <tr>
+        <th>C</th>
+        <td>160</td>
+        <td>176</td>
+        <td>195</td>
+        <td>215</td>
+        <th bgcolor="orange">201</td>
+        <td>215</td>
+        <td>230</td>
+        <td>247</td>
+      </tr>
+      <tr>
+        <th>D</th>
+        <td>130</td>
+        <td>139</td>
+        <th bgcolor="orange">152</td>
+        <td>168</td>
+        <td>178</td>
+        <td>185</td>
+        <td>195</td>
+        <td>208</td>
+      </tr>
+      <tr>
+        <th>E</th>
+        <td>125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>180</td>
+        <td>167</td>
+        <th bgcolor="orange">180</td>
+        <td>195</td>
+        <td>212</td>
+      </tr>
+      <tr>
+        <th>F</th>
+        <td>111</td>
+        <td>125</td>
+        <td>141</td>
+        <td>160</td>
+        <td>158</td>
+        <td>167</td>
+        <th bgcolor="orange">180</td>
+        <td>195</td>
+      </tr>
+      <tr>
+        <th>G</th>
+        <td>270</td>
+        <td>250</td>
+        <td>230</td>
+        <th bgcolor="orange">212</td>
+        <td>301</td>
+        <td>282</td>
+        <td>265</td>
+        <td>250</td>
+      </tr>
+      <tr>
+        <th>H</th>
+        <td>261</td>
+        <td>237</td>
+        <td>213</td>
+        <td>190</td>
+        <td>251</td>
+        <td>226</td>
+        <td>201</td>
+        <th bgcolor="orange">176</td>
+      </tr>
+    <caption>
+        Tab 3. The Distance Matrix of the point clouds displayed in Fig. Z. Solution by the Hungarian Algorithm highlighted. Sum of distances=1518.
+    </caption>
+    </table>
+
+    <br />
+
+    In our pipeline, we square the distances in this matrix before passing it to the Hungarian Algorithm, to add importance to too long distances between points. After the most optimal pairs are found, the root of the distances are taken to transform them back into their original magnitudes.
+
 </p>
 <h2>Target data sets</h2>
 
@@ -247,7 +597,7 @@ In addition to the Datasaurus (and some other target shapes from the Datasaurus 
     <div class="column">
         <figure>
             <img src="figures_website/points_1.png" alt="Outline frame 1" style="width:180%">
-            <figcaption>Fig.17 - First frame (point cloud.</figcaption>
+            <figcaption>Fig.17 - First frame (point cloud).</figcaption>
         </figure>
     </div>
     <div class="column">
