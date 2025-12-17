@@ -256,6 +256,9 @@ if __name__ == '__main__':
 
     line_shapes = ['x', 'h_lines', 'v_lines', 'wide_lines', 'high_lines', 'slant_up', 'slant_down', 'circle', 'star', 'down_parab', 'bullseye', 'dots', 'random_cloud']
 
+    # N = 855
+    # line_shapes = ['random_cloud', 'circle']
+
     for line_shape in line_shapes:
 
         generate_dataset(line_shape, N)
