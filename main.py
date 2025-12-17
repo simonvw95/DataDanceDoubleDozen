@@ -126,6 +126,13 @@ def chamfer(pos_1, pos_2):
     return term1 + term2
 
 
+def single_point_distance(point, pos_2):
+
+    pdist = distance_matrix(point[None, :], pos_2)
+
+    return pdist.min()
+
+
 # precise hungarian algorithm, measures most optimal distances between every pair of points (O(n^3)), good for refining results
 def hungarian(pos_1, pos_2):
 
@@ -453,6 +460,20 @@ def create_gifs(shape_start, shape_end):
 if __name__ == '__main__':
 
     # SET ALL ARGUMENTS HERE
+    # for the exact functionality of the Datasaurus Dozen paper use the following parameter values
+    # n_points = 250
+    # it = 300000
+    # de = 2
+    # frames = 100
+    # max_shake = 0.1
+    # min_shake = 0.1
+    # max_temp = 0.4
+    # min_temp = 0
+    # max_sample_divis = 250  # equivalant to a sample size of 1
+    # min_sample = 1
+    # func_list = [single_point_distance] * int(it) + 1000)
+
+    # SET ALL ARGUMENTS HERE
     it = 150000  # 100000 for 2nd round of datadance, 150000 normal
     de = 2
     frames = 100
@@ -464,16 +485,25 @@ if __name__ == '__main__':
     min_sample = 1
 
     # distance functions
-    # func_list = [chamfer] * int(it * 0.9) + [hungarian] * (int(it * 0.1) + 1000)  # for normal Datasaurus Dozen
-    func_list = [hungarian] * int(it * 0.85) + [chamfer] * (int(it * 0.15) + 1000)  # for datadance
-    # func_list = [hungarian] * int(it * 0.9) + [chamfer] * (int(it * 0.1) + 1000)
+    func_list = [chamfer] * int(it * 0.9) + [hungarian] * (int(it * 0.1) + 1000)  # for normal Datasaurus Dozen
+    # func_list = [hungarian] * int(it * 0.85) + [chamfer] * (int(it * 0.15) + 1000)  # for datadance
 
-    shape_start = 'circle_250'
-    n_points = 250
-    shape_ends = ['datadance_250_{}'.format(cnt) for cnt in range(1, 25)]
+    # shape_start = 'circle_250'
+    # n_points = 250
+    # shape_ends = ['datadance_250_{}'.format(cnt) for cnt in range(1, 25)]
 
     # uncomment for shape replication for Datasaurus Dozen
+    # shape_start = 'random_cloud_250'
     # shape_ends = ['x', 'h_lines', 'v_lines', 'wide_lines', 'high_lines', 'slant_up', 'slant_down', 'circle', 'star', 'down_parab', 'bullseye', 'dots']
+    # for i in range(len(shape_ends)):
+    #     shape_ends[i] = shape_ends[i] + '_' + str(n_points)
+
+    # uncomment for shape replicating of other shapes
+    n_points = 855
+    shape_start = 'random_cloud_' + str(n_points)
+    shape_ends = ['circle_' + str(n_points)]
+    # shape_start = 'circle_' + str(n_points)
+    # shape_ends = ['uu', 'bike', 'custom_dinosaur', 'maple_leaves', 'netherlands', 'palm_tree', 'rooster', 'butterfly']
     # for i in range(len(shape_ends)):
     #     shape_ends[i] = shape_ends[i] + '_' + str(n_points)
 
