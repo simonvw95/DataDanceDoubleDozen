@@ -149,7 +149,7 @@ def scale(x0):
 
     mtx3 = (x0 - np.min(x0)) / (np.max(x0) - np.min(x0))
     mtx3 *= 60
-    mtx3 += 20
+    mtx3 += 24
 
     return mtx3
 
@@ -211,9 +211,12 @@ def perturb(df, tar_df,
         df['y'][row] = ym
         new_dist = dis_func(scaled_tar_df, scale(df.to_numpy()))
 
-        # we accept new vals if we are closer (with a minimum amount) or if we are allowed to accept bad solution
+        # # we accept new vals if we are closer (with a minimum amount) or if we are allowed to accept bad solution
         if (new_dist < old_dist and (abs(new_dist - old_dist) >= min_move)) or do_bad:
             break
+        # we accept new vals if we are closer (with a minimum amount) or if we are allowed to accept bad solution
+        # if (new_dist < old_dist) or do_bad:
+        #     break
         else:
             # set back to old vals if our solution is unacceptable
             df['x'][row] = old_vals[0]
@@ -471,21 +474,21 @@ if __name__ == '__main__':
     # min_temp = 0
     # max_sample_divis = 250  # equivalant to a sample size of 1
     # min_sample = 1
-    # func_list = [single_point_distance] * int(it) + 1000)
+    # func_list = [single_point_distance] * (int(it) + 1000)
 
     # SET ALL ARGUMENTS HERE
     it = 150000  # 100000 for 2nd round of datadance, 150000 normal
     de = 2
     frames = 100
     max_shake = 0.5  # 0.25 for 2nd round of datadance, 0.5 normal
-    min_shake = 0.1
+    min_shake = 0.3  # 0.1 normal
     max_temp = 0.4  # 0.15 for 2nd round of datadance, 0.4 normal, 0.15 test
     min_temp = 0
     max_sample_divis = 35  # 40 for 2nd round of datadance, 35 normal
-    min_sample = 1
+    min_sample = 10  # 1 normal
 
     # distance functions
-    func_list = [chamfer] * int(it * 0.9) + [hungarian] * (int(it * 0.1) + 1000)  # for normal Datasaurus Dozen
+    func_list = [chamfer] * int(it * 0.80) + [hungarian] * (int(it * 0.2) + 1000)  # for normal Datasaurus Dozen
     # func_list = [hungarian] * int(it * 0.85) + [chamfer] * (int(it * 0.15) + 1000)  # for datadance
 
     # shape_start = 'circle_250'
@@ -501,11 +504,10 @@ if __name__ == '__main__':
     # uncomment for shape replicating of other shapes
     n_points = 855
     shape_start = 'random_cloud_' + str(n_points)
-    shape_ends = ['circle_' + str(n_points)]
-    # shape_start = 'circle_' + str(n_points)
-    # shape_ends = ['uu', 'bike', 'custom_dinosaur', 'maple_leaves', 'netherlands', 'palm_tree', 'rooster', 'butterfly']
-    # for i in range(len(shape_ends)):
-    #     shape_ends[i] = shape_ends[i] + '_' + str(n_points)
+    # shape_ends = ['slant_down']
+    shape_ends = ['bike'] # , 'custom_dinosaur', 'maple_leaves', 'netherlands', 'palm_tree', 'rooster', 'butterfly', 'uu']
+    for i in range(len(shape_ends)):
+        shape_ends[i] = shape_ends[i] + '_' + str(n_points)
 
     for shape_end in shape_ends:
 
