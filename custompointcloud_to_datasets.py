@@ -12,7 +12,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 ############################################################################################################
 # very important variable, sets the number of points we want to use for each frame of the rickroll/datadance
-N = 855
+N = 250
 ############################################################################################################
 
 for img in os.listdir(spec_dir):
