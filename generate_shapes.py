@@ -116,7 +116,7 @@ def generate_dataset(line_shape, n_points):
 
         lines = []
         for r in radii:
-            theta = np.linspace(0, 2 * np.pi, 100)
+            theta = np.linspace(0, 2 * np.pi, 72)
             xs = cx + r * np.cos(theta)
             ys = cy + r * np.sin(theta)
             pts = np.column_stack([xs, ys]).tolist()
